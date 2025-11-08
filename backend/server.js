@@ -24,7 +24,7 @@ app.get('/api/episodes', async (req, res) => {
     // Transformăm datele pentru a include id și data JSON
     const episodes = rows.map(row => ({
       id: row.id,
-      ...JSON.parse(row.data)
+      ...row.data
     }));
 
     res.json(episodes);
@@ -46,7 +46,7 @@ app.get('/api/episodes/:id', async (req, res) => {
 
     const episode = {
       id: rows[0].id,
-      ...JSON.parse(rows[0].data)
+      ...rows[0].data
     };
 
     res.json(episode);
@@ -68,7 +68,7 @@ app.post('/api/episodes', async (req, res) => {
 
     const [result] = await db.query(
       'INSERT INTO data (data) VALUES (?)',
-      [JSON.stringify(episodeData)]
+      [episodeData]
     );
 
     res.status(201).json({
@@ -95,7 +95,7 @@ app.put('/api/episodes/:id', async (req, res) => {
 
     await db.query(
       'UPDATE data SET data = ? WHERE id = ?',
-      [JSON.stringify(episodeData), id]
+      [episodeData, id]
     );
 
     res.json({ message: 'Episode updated successfully' });
