@@ -99,7 +99,7 @@ app.post('/api/episodes', authenticateToken, async (req, res) => {
 
     const [result] = await db.query(
       'INSERT INTO data (data) VALUES (?)',
-      [episodeData]
+      [JSON.stringify(episodeData)]
     );
 
     res.status(201).json({
@@ -126,7 +126,7 @@ app.put('/api/episodes/:id', authenticateToken, async (req, res) => {
 
     await db.query(
       'UPDATE data SET data = ? WHERE id = ?',
-      [episodeData, id]
+      [JSON.stringify(episodeData), id]
     );
 
     res.json({ message: 'Episode updated successfully' });
