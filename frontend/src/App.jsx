@@ -5,6 +5,8 @@ import EpisodeList from './components/EpisodeList'
 import EpisodeDetail from './components/EpisodeDetail'
 import Login from './pages/Login'
 import AdminDashboard from './pages/AdminDashboard'
+import AddEpisode from './pages/AddEpisode'
+import EditEpisode from './pages/EditEpisode'
 
 function App() {
   return (
@@ -23,6 +25,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/episodes/new"
+              element={
+                <ProtectedRoute>
+                  <AddEpisode />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/episodes/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <EditEpisode />
                 </ProtectedRoute>
               }
             />
