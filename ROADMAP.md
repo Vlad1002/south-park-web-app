@@ -301,6 +301,31 @@ CREATE TABLE `data` (
 
 ---
 
+## 📦 Backlog / Future Enhancements (Optional)
+
+### User Management în Baza de Date
+**Dacă avem timp, putem extinde autentificarea:**
+- [ ] Creează tabel `users` în MySQL
+  ```sql
+  CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+  ```
+- [ ] Instalează bcrypt pentru hashing parole: `npm install bcrypt`
+- [ ] Endpoint `/api/auth/register` pentru înregistrare
+- [ ] Validare username/password (lungime minimă, etc.)
+- [ ] Hash parole cu bcrypt înainte de salvare
+- [ ] Verificare password hash la login
+- [ ] (Optional) Roluri: admin vs. user simplu
+
+**Prioritate:** LOW (doar dacă e timp după toate features obligatorii)
+**Estimare:** 3-4 ore
+
+---
+
 ## 🎨 Design Improvements (Optional)
 
 - [ ] Logo South Park în header
