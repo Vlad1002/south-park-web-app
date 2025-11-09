@@ -117,7 +117,7 @@ function Login() {
             onClick={() => navigate('/')}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
-            ← Back to Episodes
+            ← Back to Home
           </button>
         </div>
       </div>
