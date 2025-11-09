@@ -1,7 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const db = require('./db');
+const authenticateToken = require('./authMiddleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,6 +17,34 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'South Park Episodes API is running!' });
+});
+
+// POST /api/auth/login - Login endpoint
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Validare input
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  // Verificare credențiale (hardcoded în .env)
+  if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+    // Generare JWT token
+    const token = jwt.sign(
+      { username: username, role: 'admin' },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' } // Token valabil 24 ore
+    );
+
+    return res.json({
+      message: 'Login successful',
+      token: token,
+      user: { username: username, role: 'admin' }
+    });
+  } else {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
 });
 
 // GET /api/episodes - Listează toate episoadele
@@ -56,8 +87,8 @@ app.get('/api/episodes/:id', async (req, res) => {
   }
 });
 
-// POST /api/episodes - Adaugă un episod nou
-app.post('/api/episodes', async (req, res) => {
+// POST /api/episodes - Adaugă un episod nou (PROTEJAT - necesită autentificare)
+app.post('/api/episodes', authenticateToken, async (req, res) => {
   try {
     const episodeData = req.body;
 
@@ -68,7 +99,7 @@ app.post('/api/episodes', async (req, res) => {
 
     const [result] = await db.query(
       'INSERT INTO data (data) VALUES (?)',
-      [episodeData]
+      [JSON.stringify(episodeData)]
     );
 
     res.status(201).json({
@@ -81,8 +112,8 @@ app.post('/api/episodes', async (req, res) => {
   }
 });
 
-// PUT /api/episodes/:id - Actualizează un episod
-app.put('/api/episodes/:id', async (req, res) => {
+// PUT /api/episodes/:id - Actualizează un episod (PROTEJAT - necesită autentificare)
+app.put('/api/episodes/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const episodeData = req.body;
@@ -95,7 +126,7 @@ app.put('/api/episodes/:id', async (req, res) => {
 
     await db.query(
       'UPDATE data SET data = ? WHERE id = ?',
-      [episodeData, id]
+      [JSON.stringify(episodeData), id]
     );
 
     res.json({ message: 'Episode updated successfully' });
@@ -105,8 +136,8 @@ app.put('/api/episodes/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/episodes/:id - Șterge un episod
-app.delete('/api/episodes/:id', async (req, res) => {
+// DELETE /api/episodes/:id - Șterge un episod (PROTEJAT - necesită autentificare)
+app.delete('/api/episodes/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 
