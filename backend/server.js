@@ -50,10 +50,10 @@ app.post('/api/auth/login', (req, res) => {
 // GET /api/episodes - Listează toate episoadele
 app.get('/api/episodes', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM data');
+    const result = await db.query('SELECT * FROM data');
 
     // Transformăm datele pentru a include id și data JSON
-    const episodes = rows.map(row => ({
+    const episodes = result.rows.map(row => ({
       id: row.id,
       ...row.data
     }));
@@ -69,15 +69,15 @@ app.get('/api/episodes', async (req, res) => {
 app.get('/api/episodes/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const [rows] = await db.query('SELECT * FROM data WHERE id = ?', [id]);
+    const result = await db.query('SELECT * FROM data WHERE id = $1', [id]);
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Episode not found' });
     }
 
     const episode = {
-      id: rows[0].id,
-      ...rows[0].data
+      id: result.rows[0].id,
+      ...result.rows[0].data
     };
 
     res.json(episode);
@@ -97,14 +97,14 @@ app.post('/api/episodes', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Name, season, and episode are required' });
     }
 
-    const [result] = await db.query(
-      'INSERT INTO data (data) VALUES (?)',
+    const result = await db.query(
+      'INSERT INTO data (data) VALUES ($1) RETURNING id',
       [JSON.stringify(episodeData)]
     );
 
     res.status(201).json({
       message: 'Episode created successfully',
-      id: result.insertId
+      id: result.rows[0].id
     });
   } catch (error) {
     console.error('Error creating episode:', error);
@@ -119,13 +119,13 @@ app.put('/api/episodes/:id', authenticateToken, async (req, res) => {
     const episodeData = req.body;
 
     // Verifică dacă episodul există
-    const [existing] = await db.query('SELECT * FROM data WHERE id = ?', [id]);
-    if (existing.length === 0) {
+    const existing = await db.query('SELECT * FROM data WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Episode not found' });
     }
 
     await db.query(
-      'UPDATE data SET data = ? WHERE id = ?',
+      'UPDATE data SET data = $1 WHERE id = $2',
       [JSON.stringify(episodeData), id]
     );
 
@@ -141,9 +141,9 @@ app.delete('/api/episodes/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [result] = await db.query('DELETE FROM data WHERE id = ?', [id]);
+    const result = await db.query('DELETE FROM data WHERE id = $1', [id]);
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Episode not found' });
     }
 
