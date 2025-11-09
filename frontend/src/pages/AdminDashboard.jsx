@@ -69,7 +69,7 @@ function AdminDashboard() {
           </div>
           <div className="flex gap-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/episodes')}
               className="px-4 py-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
             >
               View Episodes
