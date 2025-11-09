@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 import axios from 'axios';
 
 function AddEpisode() {
@@ -76,7 +77,7 @@ function AddEpisode() {
     try {
       // Trimite cu token JWT în header
       await axios.post(
-        'http://localhost:5000/api/episodes',
+        `${API_URL}/api/episodes`,
         formData,
         {
           headers: {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { episodesAPI } from '../services/api';
+import { API_URL } from '../config';
 import axios from 'axios';
 
 function EditEpisode() {
@@ -109,7 +110,7 @@ function EditEpisode() {
     try {
       // Trimite cu token JWT în header
       await axios.put(
-        `http://localhost:5000/api/episodes/${id}`,
+        `${API_URL}/api/episodes/${id}`,
         formData,
         {
           headers: {
