@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { episodesAPI } from '../services/api';
 
 function EpisodeList() {
@@ -88,16 +89,25 @@ function EpisodeList() {
                 </p>
               )}
 
-              {episode.wiki_url && (
-                <a
-                  href={episode.wiki_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+              <div className="flex gap-3 flex-wrap">
+                <Link
+                  to={`/episodes/${episode.id}`}
+                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
                 >
-                  View on Wiki →
-                </a>
-              )}
+                  View Details →
+                </Link>
+
+                {episode.wiki_url && (
+                  <a
+                    href={episode.wiki_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-blue-600 hover:text-blue-800 font-medium text-sm px-4 py-2 border border-blue-600 rounded-lg transition-colors"
+                  >
+                    Wiki →
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}
