@@ -27,7 +27,8 @@ Thumbs.db
 *.temp
 
 # Database (nu vrem parola în git)
-*.sql
+south_park_episodes.sql
+# Permitem seed.sql pentru deployment
 
 # Python cache (de la scripturile de fix)
 __pycache__/

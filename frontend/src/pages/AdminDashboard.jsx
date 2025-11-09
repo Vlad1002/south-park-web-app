@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { episodesAPI } from '../services/api';
+import { API_URL } from '../config';
 import axios from 'axios';
 
 function AdminDashboard() {
@@ -42,7 +43,7 @@ function AdminDashboard() {
 
     try {
       await axios.delete(
-        `http://localhost:5000/api/episodes/${id}`,
+        `${API_URL}/api/episodes/${id}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -69,7 +70,7 @@ function AdminDashboard() {
           </div>
           <div className="flex gap-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/episodes')}
               className="px-4 py-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
             >
               View Episodes

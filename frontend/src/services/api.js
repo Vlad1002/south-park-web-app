@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { API_URL } from '../config';
 
 // Configurare axios pentru a comunica cu backend-ul
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Backend API URL
+  baseURL: `${API_URL}/api`, // Backend API URL (din .env)
   timeout: 10000, // 10 secunde timeout
   headers: {
     'Content-Type': 'application/json'
