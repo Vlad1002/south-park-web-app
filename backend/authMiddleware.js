@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // Middleware pentru verificare JWT token
 const authenticateToken = (req, res, next) => {
-  // Obține token din header Authorization: Bearer <token>
+  // Obtine token din header Authorization: Bearer <token>
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
@@ -12,10 +12,10 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    // Verifică și decodează token-ul
+    // Verifica si decodeaza token-ul
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Salvează user info în request
-    next(); // Continuă la următorul handler
+    req.user = decoded; // Salveaza user info in request
+    next(); // Continua la urmatorul handler
   } catch (error) {
     console.error('Token verification failed:', error.message);
     return res.status(403).json({ error: 'Invalid or expired token.' });

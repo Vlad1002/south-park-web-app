@@ -12,7 +12,7 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch episodes când componenta se montează
+  // Fetch episodes cand componenta se monteaza
   useEffect(() => {
     fetchEpisodes();
   }, []);

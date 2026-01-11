@@ -5,7 +5,7 @@ function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
-  // Așteaptă să se încarce starea de autentificare
+  // Asteapta sa se incarce starea de autentificare
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -14,12 +14,12 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  // Dacă nu e autentificat, redirect la login
+  // Daca nu e autentificat, redirect la login
   if (!isAuthenticated()) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Dacă e autentificat, afișează componenta
+  // Daca e autentificat, afiseaza componenta
   return children;
 }
 

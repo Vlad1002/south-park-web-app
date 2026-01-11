@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // La mount, verifică dacă există token în localStorage
+  // La mount, verifica daca exista token in localStorage
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Funcție pentru login
+  // Functie pentru login
   const login = async (username, password) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
@@ -40,11 +40,11 @@ export const AuthProvider = ({ children }) => {
 
       const { token: newToken, user: newUser } = response.data;
 
-      // Salvează în state
+      // Salveaza in state
       setToken(newToken);
       setUser(newUser);
 
-      // Salvează în localStorage
+      // Salveaza in localStorage
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(newUser));
 
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Funcție pentru logout
+  // Functie pentru logout
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  // Verifică dacă user este autentificat
+  // Verifica daca user este autentificat
   const isAuthenticated = () => {
     return !!token && !!user;
   };

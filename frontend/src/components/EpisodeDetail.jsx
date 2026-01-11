@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { episodesAPI } from '../services/api';
 
 function EpisodeDetail() {
-  const { id } = useParams(); // Obține ID-ul din URL
+  const { id } = useParams(); // Obtine ID-ul din URL
   const navigate = useNavigate();
   const [episode, setEpisode] = useState(null);
   const [loading, setLoading] = useState(true);

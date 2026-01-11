@@ -1,8 +1,8 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-// Creăm un pool de conexiuni la MySQL
-// Suportă atât DATABASE_URL (production) cât și credențiale separate (development)
+// Cream un pool de conexiuni la MySQL
+// Suporta atat DATABASE_URL (production) cat si credentiale separate (development)
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',

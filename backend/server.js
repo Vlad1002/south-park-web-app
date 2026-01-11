@@ -10,8 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors()); // Permite frontend-ului să comunice cu backend-ul
-app.use(bodyParser.json({ limit: '50mb' })); // Parsează JSON (50mb pentru imagini base64)
+app.use(cors()); // Permite frontend-ului sa comunice cu backend-ul
+app.use(bodyParser.json({ limit: '50mb' })); // Parseaza JSON (50mb pentru imagini base64)
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 // Test route
@@ -28,7 +28,7 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(400).json({ error: 'Username and password are required' });
   }
 
-  // Verificare credențiale (hardcoded în .env)
+  // Verificare credentiale (hardcoded in .env)
   if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
     // Generare JWT token
     const token = jwt.sign(
@@ -47,12 +47,12 @@ app.post('/api/auth/login', (req, res) => {
   }
 });
 
-// GET /api/episodes - Listează toate episoadele
+// GET /api/episodes - Listeaza toate episoadele
 app.get('/api/episodes', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM data');
 
-    // Transformăm datele pentru a include id și data JSON
+    // Transformam datele pentru a include id si data JSON
     const episodes = rows.map(row => ({
       id: row.id,
       ...row.data
@@ -65,7 +65,7 @@ app.get('/api/episodes', async (req, res) => {
   }
 });
 
-// GET /api/episodes/:id - Obține un episod specific
+// GET /api/episodes/:id - Obtine un episod specific
 app.get('/api/episodes/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -87,12 +87,12 @@ app.get('/api/episodes/:id', async (req, res) => {
   }
 });
 
-// POST /api/episodes - Adaugă un episod nou (PROTEJAT - necesită autentificare)
+// POST /api/episodes - Adauga un episod nou (PROTEJAT - necesita autentificare)
 app.post('/api/episodes', authenticateToken, async (req, res) => {
   try {
     const episodeData = req.body;
 
-    // Validare simplă
+    // Validare simpla
     if (!episodeData.name || !episodeData.season || !episodeData.episode) {
       return res.status(400).json({ error: 'Name, season, and episode are required' });
     }
@@ -112,13 +112,13 @@ app.post('/api/episodes', authenticateToken, async (req, res) => {
   }
 });
 
-// PUT /api/episodes/:id - Actualizează un episod (PROTEJAT - necesită autentificare)
+// PUT /api/episodes/:id - Actualizeaza un episod (PROTEJAT - necesita autentificare)
 app.put('/api/episodes/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const episodeData = req.body;
 
-    // Verifică dacă episodul există
+    // Verifica daca episodul exista
     const [existing] = await db.query('SELECT * FROM data WHERE id = ?', [id]);
     if (existing.length === 0) {
       return res.status(404).json({ error: 'Episode not found' });
@@ -136,7 +136,7 @@ app.put('/api/episodes/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// DELETE /api/episodes/:id - Șterge un episod (PROTEJAT - necesită autentificare)
+// DELETE /api/episodes/:id - Sterge un episod (PROTEJAT - necesita autentificare)
 app.delete('/api/episodes/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -154,7 +154,7 @@ app.delete('/api/episodes/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Pornește serverul
+// Porneste serverul
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -31,12 +31,12 @@ function AddEpisode() {
     }));
   };
 
-  // Handle image upload și conversie la Base64
+  // Handle image upload si conversie la Base64
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validare tip fișier
+    // Validare tip fisier
     if (!file.type.startsWith('image/')) {
       setError('Please select a valid image file');
       return;
@@ -75,7 +75,7 @@ function AddEpisode() {
     }
 
     try {
-      // Trimite cu token JWT în header
+      // Trimite cu token JWT in header
       await axios.post(
         `${API_URL}/api/episodes`,
         formData,

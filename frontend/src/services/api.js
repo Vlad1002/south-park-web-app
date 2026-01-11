@@ -10,7 +10,7 @@ const api = axios.create({
   }
 });
 
-// Funcții pentru API calls
+// Functii pentru API calls
 export const episodesAPI = {
   // GET toate episoadele
   getAll: () => api.get('/episodes'),
@@ -18,13 +18,13 @@ export const episodesAPI = {
   // GET un episod specific
   getById: (id) => api.get(`/episodes/${id}`),
 
-  // POST - adaugă episod nou
+  // POST - adauga episod nou
   create: (episodeData) => api.post('/episodes', episodeData),
 
-  // PUT - actualizează episod
+  // PUT - actualizeaza episod
   update: (id, episodeData) => api.put(`/episodes/${id}`, episodeData),
 
-  // DELETE - șterge episod
+  // DELETE - sterge episod
   delete: (id) => api.delete(`/episodes/${id}`)
 };
 
